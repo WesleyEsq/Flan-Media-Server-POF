@@ -1,0 +1,28 @@
+[Unit]
+Description=Flan Media Server
+After=network.target network-online.target tailscaled.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+# User and Group matching your login
+User=wess
+Group=wess
+
+# Path to the directory where Flan binary and ./data will live
+WorkingDirectory=/home/wess/flan-server
+ExecStart=/home/wess/flan-server/flan
+
+# Auto-restart on crashes or unexpected exits
+Restart=on-failure
+RestartSec=5s
+
+# File descriptor limits for high I/O streaming
+LimitNOFILE=65536
+
+# Logs routed to systemd journal (journalctl -u flan -f)
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
